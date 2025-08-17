@@ -11,5 +11,4 @@ class OrderMethods:
 
     @staticmethod
     def get_orders_list():
-        response = requests.get(Url.ORDERS_URL)
-        return response
+        return requests.get(Url.ORDERS_URL)

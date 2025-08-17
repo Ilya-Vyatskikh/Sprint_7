@@ -1,6 +1,5 @@
 import pytest
 
-
 from generators import generate_create_courier_body
 from methods.courier_methods import CourierMethods
 
@@ -16,9 +15,16 @@ def create_and_delete_courier():
         login_courier = CourierMethods.login_courier(login, password)
         if login_courier.status_code == 200:
             courier_id = login_courier.json().get('id')
-    yield [courier_body, login, password]
-    if courier_id:
-        CourierMethods.delete_courier(courier_id)
+    yield login, password
+    CourierMethods.delete_courier(courier_id)
 
-
-
+@pytest.fixture
+def delete_courier():
+    created_credentials = []
+    yield created_credentials
+    for login, password in created_credentials:
+        login_response = CourierMethods.login_courier(login, password)
+        if login_response.status_code == 200:
+            courier_id = login_response.json().get('id')
+            if courier_id:
+                CourierMethods.delete_courier(courier_id)

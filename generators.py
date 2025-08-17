@@ -11,7 +11,7 @@ def generate_order_body():
     "phone": fake.phone_number(),
     "rentTime": fake.random_int(min=1, max=10),
     "deliveryDate": fake.date_between(start_date="today", end_date="+10d").isoformat(),
-    "comment": fake.sentence(nb_words=5)
+    "comment": fake.sentence(nb_words=5),
     "color": []
     }
 
