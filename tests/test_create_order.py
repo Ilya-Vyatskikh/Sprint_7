@@ -14,7 +14,7 @@ class TestCreateOrder:
         'Успешный запрос возвращает статус 201 и номер заказа (track).'
     )
     @pytest.mark.parametrize('color', [['BLACK'], ['GREY'], [], ['BLACK', 'GREY']])
-    def test_create_order(self, color):
+    def test_create_order_with_different_color_combinations(self, color):
         with allure.step(f'Формируем тело заказа с цветом: {color if color else 'не указан'}'):
             order_body = modify_order_body('color', color)
         with allure.step('Отправляем запрос на создание заказа'):

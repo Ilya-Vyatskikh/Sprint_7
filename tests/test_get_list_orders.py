@@ -16,5 +16,5 @@ class TestGetOrdersList:
             assert response.status_code == 200
         with allure.step('Проверяем, что в ответе присутствует поле "orders"'):
             assert 'orders' in response.json()
-        with allure.step('Проверяем, что значение поля "orders" — это список (массив)'):
+        with allure.step('Проверяем, что значение поля "orders" — это список'):
             assert isinstance(response.json()['orders'], list)
