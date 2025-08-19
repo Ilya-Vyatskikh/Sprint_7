@@ -23,23 +23,23 @@ class TestCreateCourier:
         delete_courier.append((login, password))
 
 
-    @allure.title('Нельзя создать курьера без обязательного поля')
-    def test_duplicate_courier_failed(self, delete_courier):
+    @allure.title('Нельзя создать курьера с существующим логином')
+    def test_cannot_create_duplicate_courier(self, delete_courier):
         courier_body = generate_create_courier_body()
         login = courier_body['login']
         password = courier_body['password']
         with allure.step('Создаём курьера в первый раз'):
             first_response = CourierMethods.create_courier(courier_body)
         with allure.step('Проверяем, что курьер создан в первый раз'):
-            if first_response.status_code == 201:
-                delete_courier.append((login, password))
-                with allure.step('Повторно отправляем запрос с теми же данными'):
-                    second_response = CourierMethods.create_courier(courier_body)
-                with allure.step('Проверяем, что сервер вернул 409'):
-                    assert second_response.status_code == 409
-                with allure.step(f'Проверяем сообщение об ошибке:"{MessageError.COURIER_EXISTS}"'):
-                    assert 'message' in second_response.json()
-                    assert MessageError.COURIER_EXISTS in second_response.json()['message']
+            assert first_response.status_code == 201
+            delete_courier.append((login, password))
+        with allure.step('Повторно отправляем запрос с теми же данными'):
+            second_response = CourierMethods.create_courier(courier_body)
+        with allure.step('Проверяем, что сервер вернул 409'):
+            assert second_response.status_code == 409
+        with allure.step(f'Проверяем сообщение об ошибке:"{MessageError.COURIER_EXISTS}"'):
+            assert 'message' in second_response.json()
+            assert MessageError.COURIER_EXISTS in second_response.json()['message']
 
 
     @allure.title('Нельзя создать курьера без обязательного поля')
